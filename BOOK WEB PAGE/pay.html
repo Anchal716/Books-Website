@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment Tracker</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+    .payment-list {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Investment Payment Tracker</h2>
+
+  <input type="text" id="personName" placeholder="Person Name" />
+  <input type="month" id="paymentMonth" />
+  <input type="number" id="amount" placeholder="Amount Paid" />
+  <button onclick="savePayment()">Save Payment</button>
+
+  <div class="payment-list" id="paymentList"></div>
+
+  <script>
+    function savePayment() {
+      const name = document.getElementById('personName').value;
+      const month = document.getElementById('paymentMonth').value;
+      const amount = document.getElementById('amount').value;
+
+      if (!name || !month || !amount) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const payment = { name, month, amount };
+      let payments = JSON.parse(localStorage.getItem("payments")) || [];
+      payments.push(payment);
+      localStorage.setItem("payments", JSON.stringify(payments));
+      showPayments();
+    }
+
+    function showPayments() {
+      const payments = JSON.parse(localStorage.getItem("payments")) || [];
+      const list = document.getElementById("paymentList");
+      list.innerHTML = "<h3>Payment History</h3>";
+
+      payments.forEach((pay, index) => {
+        list.innerHTML += <p>${index + 1}. ${pay.name} paid ₹${pay.amount} for ${pay.month}</p>;
+      });
+    }
+
+    // Show saved payments on page load
+    window.onload = showPayments;
+  </script>
+
+</body>
+</html>

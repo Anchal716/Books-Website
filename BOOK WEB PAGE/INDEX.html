@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Haven</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <h1>📚 Book Haven</h1>
+    <ul>
+      <li><a href="#" onclick="showSection('home')">Home</a></li>
+      <li><a href="#" onclick="showSection('products')">Products</a></li>
+      <li><a href="#" onclick="showSection('about')">About Us</a></li>
+      <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="home" class="active">
+    <div class="searchbar">
+      <input type="text" id="searchInput" placeholder="Search for books..." onkeyup="filterBooks()">
+    </div>
+    <div class="products" id="bookContainer"></div>
+  </section>
+
+  <section id="products">
+    <div class="products" id="productContainer"></div>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>We are passionate book lovers committed to bringing you timeless classics and trending titles all in one place.</p>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: support@bookhaven.com</p>
+    <p>Phone: +91 9876543210</p>
+    <p><a href="register.html" style="color:lightblue">Register Here</a> to buy books</p>
+  </section>
+
+  <script>
+    const books = [
+      { title: "The Alchemist", author: "Paulo Coelho", img: "https://covers.openlibrary.org/b/isbn/0061122416-L.jpg" },
+      { title: "1984", author: "George Orwell", img: "https://covers.openlibrary.org/b/isbn/0451524934-L.jpg" },
+      { title: "Harry Potter", author: "J.K. Rowling", img: "https://covers.openlibrary.org/b/isbn/0439554934-L.jpg" },
+      { title: "To Kill a Mockingbird", author: "Harper Lee", img: "https://covers.openlibrary.org/b/isbn/0061120081-L.jpg" },
+      { title: "Pride and Prejudice", author: "Jane Austen", img: "https://covers.openlibrary.org/b/isbn/0486284735-L.jpg" },
+      { title: "The Great Gatsby", author: "F. Scott Fitzgerald", img: "https://covers.openlibrary.org/b/isbn/0743273567-L.jpg" },
+      { title: "The Hobbit", author: "J.R.R. Tolkien", img: "https://covers.openlibrary.org/b/isbn/0345339681-L.jpg" },
+      { title: "The Book Thief", author: "Markus Zusak", img: "https://covers.openlibrary.org/b/isbn/0375842209-L.jpg" },
+      { title: "Life of Pi", author: "Yann Martel", img: "https://covers.openlibrary.org/b/isbn/0156027321-L.jpg" }
+    ];
+
+    function renderBooks(containerId, filter = "") {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      books
+        .filter(b => b.title.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(book => {
+          const box = document.createElement('div');
+          box.className = 'box';
+          box.innerHTML = `
+            <img src="${book.img}" alt="${book.title}">
+            <p><strong>${book.title}</strong><br>by ${book.author}</p>
+          `;
+          container.appendChild(box);
+        });
+    }
+
+    function filterBooks() {
+      const keyword = document.getElementById("searchInput").value;
+      renderBooks("bookContainer", keyword);
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+      if (sectionId === 'home') renderBooks('bookContainer');
+      if (sectionId === 'products') renderBooks('productContainer');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBooks('bookContainer');
+      renderBooks('productContainer');
+    });
+  </script>
+</body>
+</html>
